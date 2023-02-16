@@ -1,11 +1,41 @@
-const apiKey = "634b204d4de1f9bc36203d22b615052";
+const apiKey = "c27a90ea804668002c47cdb527b44811";
 const mainEl = $("#main")
+
 
 // onload defaults
 /*let lat = "52.5";
 let lon = "-1.95";*/
-let url = `https://api.openweathermap.org/data/2.5/forecast?q=woodland&appid=e634b204d4de1f9bc36203d22b615052`;
-let cityName = "Sacramento";
+
+let cityName = prompt("Enter the name of a city");
+
+let url = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&${apiKey}`;
+
+
+//To use the city name to fetch the weather data
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`)
+  .then(response => response.json())
+  .then(data => {
+    // Extract the relevant weather information from the data
+    const temperature = Math.round(data.main.temp);
+    const description = data.weather[0].description;
+    console.log(`Temperature in ${cityName}: ${temperature}°C`);
+    console.log(`Description: ${description}`);
+  })
+  .catch((error) => {
+    console.log("An error occurred while fetching the weather data:", error);
+  });
+    const weatherDescription = data.weather[0].description;
+    const temperature = data.main.temp;
+    const feelsLike = data.main.feels_like;
+
+    // Log the weather information to the console
+    console.log(`The weather in ${cityName} is currently ${weatherDescription}.`);
+    console.log(`The temperature is ${temperature} Kelvin.`);
+    console.log(`It feels like ${feelsLike} Kelvin.`);
+  
+  .catch(error => {
+    console.error(`An error occurred while fetching the weather data: ${error}`);
+  });
 let firstLoad = true;
 
 // elements required
