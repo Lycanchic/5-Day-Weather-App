@@ -1,5 +1,8 @@
 const apiKey = "c27a90ea804668002c47cdb527b44811";
 const mainEl = $("#main")
+const searchHistory = [];
+const weatherApiRootUrl = 'https://api.openweather.org';
+
 
 
 // onload defaults
@@ -30,9 +33,9 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${api
 
     // Log the weather information to the console
     console.log(`The weather in ${cityName} is currently ${weatherDescription}.`);
-    console.log(`The temperature is ${temperature} Kelvin.`);
-    console.log(`It feels like ${feelsLike} Kelvin.`);
-  
+    console.log(`The temperature is ${temperature} Fahrenheit.`);
+    console.log(`It feels like ${feelsLike} Fahrenheit.`);
+
   .catch(error => {
     console.error(`An error occurred while fetching the weather data: ${error}`);
   });
