@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/style.css"></link>
+    <title>5 day Weather App</title>
+</head>
+<body>
+
+    <header>
+        <h1> Welcome to the 5 Day Weather App</h1>
+        <P> Hello and welcome to the 5 Day Weather App! Where you can check the 5 day forecast for any city, by simply typing in the city name in the search bar. Happy searching!</P>
+    </header>
+    <section id="search-container">
+        <aside>
+          <div id="selector" class="selector-hidden"></div>
+          <form id="search">
+            <input type="text">
+            <button type="submit" id="search-btn">Search</button>
+          </form>
+           <button id="clear-history">Clear search history</button>
+        </aside>
+        <div id="previous-searches">  
+
+        </div>
+      </section>
+      <section id="weather-display{">
+        <div id="main-card">
+          <div id="todays-day"><span id="city-name">city name</span> - <span id="todays-date"></span></div>
+          <hr>
+          <div id="todays-info">
+            <div><img src="" id="today-img"></div>
+            <span id="today-max"></span>
+            <span id="today-min"></span>
+            <span id="today-wind"></span>
+            <span id="today-humidity"></span>
+            <span id="today-uv" class="severe-uv">UV: High</span>
+          </div>
+        </div>
+        <div class="five-day">
+          5 Day Forecast
+        </div>
+        <div id="container-daily-cards">
+          <div class="daily-card" data-fiveday="0">
+            <p class="day"></p>
+            <hr>
+            <img src="" class="weather-img">
+            <p class="max"></p>
+            <p class="min"></p>
+            <p class="wind"></p>
+            <p class="humidity"></p>
+          </div>        
+          <div class="daily-card" data-fiveday="1">
+            <p class="day"></p>
+            <hr>
+            <img src="" class="weather-img">
+            <p class="max"></p>
+            <p class="min"></p>
+            <p class="wind"></p>
+            <p class="humidity"></p>
+          </div>        
+          <div class="daily-card" data-fiveday="2">
+            <p class="day"></p>
+            <hr>
+            <img src="" class="weather-img">
+            <p class="max"></p>
+            <p class="min"></p>
+            <p class="wind"></p>
+            <p class="humidity"></p>
+          </div>        
+          <div class="daily-card" data-fiveday="3">
+            <p class="day"></p>
+            <hr>
+            <img src="" class="weather-img">
+            <p class="max"></p>
+            <p class="min"></p>
+            <p class="wind"></p>
+            <p class="humidity"></p>
+          </div>        
+          <div class="daily-card" data-fiveday="4">
+            <p class="day"></p>
+            <hr>
+            <img src="" class="weather-img">
+            <p class="max"></p>
+            <p class="min"></p>
+            <p class="wind"></p>
+            <p class="humidity"></p>
+          </div>
+
+        </div>
+      </section>
+      
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<script src="assets/script.js"></script></body>
+</html>
