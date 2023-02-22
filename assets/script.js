@@ -1,9 +1,20 @@
 const apiKey = "c27a90ea804668002c47cdb527b44811";
-const mainEl = $("#main")
+const mainEl = '$("#main")'
 const searchHistory = [];
 const weatherApiRootUrl = 'https://api.openweather.org';
+const weatherApiKey = '${apiKey}'
+
+const searchForm = document.querySelector('#search-form');
+const searchInput = document.querySelector('#search.input');
+const today = document.querySelector('#today');
+const forecast = document.querySelector('#forecast');
+//const searchHistory = document.querySelector('#history');//
 
 
+//TimeZone plugins
+
+dayjs.extend(dayjs_plugin_utc);
+dayjs.extend(dayjs_plugin_timezone);
 
 // onload defaults
 /*let lat = "52.5";
@@ -35,11 +46,12 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${api
     console.log(`The weather in ${cityName} is currently ${weatherDescription}.`);
     console.log(`The temperature is ${temperature} Fahrenheit.`);
     console.log(`It feels like ${feelsLike} Fahrenheit.`);
-
+''
   .catch(error => {
     console.error(`An error occurred while fetching the weather data: ${error}`);
   });
-let firstLoad = true;
+
+   let firstLoad = true;
 
 // elements required
 const searchBtn = $("#search-btn");
