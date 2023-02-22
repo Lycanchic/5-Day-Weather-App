@@ -27,8 +27,44 @@ function renserSearchHistory() {
     btn.setAttribute('aria-controls', 'today forecast');
     btn.classList.add('history-btn', 'btn-history');
 
-    //
+    // `data-search` allows access to city name when click handler is invoked
+    btn.setAttribute('data-search', searchHistory[i]);
+    btn.textContent = searchHistory[i];
+    searchHistoryContainer.append(btn);
   }
+}
+
+// Function to update histroy in local storage then updates displayed history.
+
+function appendHistory(search) {
+
+    //If there is no search term return the function
+    if (searchHistory.indexOf(search) !== -1) {
+        return;
+    }
+    searchHistory.push(search);
+
+    localStorage.setItem('search-history', JSON.stringify (searchHistory));
+}
+
+//Funciton to get search history from local storage
+function initSearchHistory() {
+  var storedHistory = localStorage.getItem ('search-history');
+  if (storedHistory) {
+    searchHistory = JSON.parse(storedHistory);
+  }
+  renderSearchHistory();
+}
+
+//Funciton to display the current weather data fetched from OpenWeather api
+function renderCurrentWeather(city, weather) {
+    var date = date.js().format('M/D/YYY');
+
+    //Store response ata from our fetch request in variables
+    var tempF = weather.main.temp;
+    var windMph = weather.wind.speed;
+    var humidity = weather.main.humidity;
+
 }
 // onload defaults
 /*let lat = "52.5";
