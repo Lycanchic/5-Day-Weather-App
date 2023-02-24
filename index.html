@@ -17,7 +17,8 @@
         <aside>
           <div id="selector" class="selector-hidden"></div>
           <form id="search">
-            <input type="text">
+           <!--- <input type="text"> -->
+            <input type="text" placeholder="Sacramento">
             <button type="submit" id="search-btn">Search</button>
           </form>
            <button id="clear-history">Clear search history</button>
@@ -26,8 +27,8 @@
 
         </div>
       </section>
-      <section id="weather-display{">
-        <div id="main-card">
+      <section id="weather-display" >
+        <div id="main-card" style="display: none;" >
           <div id="currentDay-day"><span id="city-name">city name</span> - <span id="currentDay-date"></span></div>
           <hr>
           <div id="currentay-info">
@@ -42,7 +43,7 @@
         <div class="five-day">
           5 Day Forecast
         </div>
-        <div id="container-daily-cards">
+        <div id="container-daily-cards" style="display: none;" >
           <div class="daily-card" data-fiveday="0">
             <p class="day"></p>
             <hr>
