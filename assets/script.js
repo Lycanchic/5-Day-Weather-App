@@ -58,7 +58,7 @@ const getWeatherData = async (city) => {
 const renderWeather = async (city) => {
   const data = await getWeatherData(city);
   const weatherDescription = data.weather[0].description;
-  console.log("Weather description:", weatherDescription);
+  console.log('Weather description', weatherDescription);
   // Render the weather information
   function renderWeather(city) {
     fetch(`${apiUrl}?q=${city}&units=metric&appid=${apiKey}`)
@@ -196,24 +196,40 @@ const getCurrentWeather = (city, apiKey) => {
     
 };
      
-  const renderForecast = (dailyForecast) => {
-    const startDt = dayjs().add(1, 'day').startOf('day').unix();
-    const endDt = dayjs().add(6, 'day').startOf('day').unix();
+  // const renderForecast = (dailyForecast) => {
+  //   const startDt = dayjs().add(1, 'day').startOf('day').unix();
+  //   const endDt = dayjs().add(6, 'day').startOf('day').unix();
   
-    const headingCOl = document.createElement('div');
-    const heading = document.createElement('h4');
-    headingCOl.setAttribute('class', 'col-12');
-    heading.textContent = '5-Day Forecast';
-    headingCol.append(heading);
+  //   const headingCOl = document.createElement('div');
+  //   const heading = document.createElement('h4');
+  //   headingCOl.setAttribute('class', 'col-12');
+  //   heading.textContent = '5-Day Forecast';
+  //   headingCol.append(heading);
   
-    forecastContainer.innerHTML = '';
-    forecastContainer.append(headingCol);
+  //   forecastContainer.innerHTML = '';
+  //   forecastContainer.append(headingCol);
   
-    dailyForecast
-      .filter(forecast => forecast.dt >= startDt && forecast.dt < endDt)
-      .filter(forecast => forecast.dt_txt.slice(11, 13) == "12")
-      .forEach(forecast => renderForecastCard(forecast));
-  };
+  //   dailyForecast
+  //     .filter(forecast => forecast.dt >= startDt && forecast.dt < endDt)
+  //     .filter(forecast => forecast.dt_txt.slice(11, 13) == "12")
+  //     .forEach(forecast => renderForecastCard(forecast));
+  // };
+
+  async function renderForecast(cityName) {
+    try {
+      const currentDayWeather = await getCurrentDayWeather(cityName);
+      const fiveDayWeather = await getFiveDayWeather(cityName);
+  
+      displayCurrentDayWeather(currentDayWeather);
+      displayFiveDayWeather(fiveDayWeather);
+  
+      // Show the weather display section
+      document.querySelector('#weather-display').style.display = 'block';
+    } catch (error) {
+      console.log(error);
+      alert('Could not get weather data. Please try again later.');
+    }
+  }
   
   const fetchWeather = (location) => {
     const { lat, lon, name: city } = location;
@@ -333,14 +349,15 @@ const getCurrentWeather = (city, apiKey) => {
     const curCityId = event.target.dataset.cityId;
   };
   
-  searchBtn.addEventListener("click", () => {
-    const cityName = cityNameInput.value.trim();
-    if (cityName) {
-      renderForecast(cityName);
-    }
-  });
-  
   document.addEventListener('DOMContentLoaded', () => {
-   
-    
+    const cityNameInput = document.getElementById('city-name-input');
+    const searchBtn = document.getElementById('search-btn');
+  
+  //   searchBtn.addEventListener("click", () => {
+  //     const cityName = cityNameInput.value.trim();
+  //     if (cityName) {
+  //       renderForecast(cityName);
+  //     }
+  //   });
+  // });
   });
