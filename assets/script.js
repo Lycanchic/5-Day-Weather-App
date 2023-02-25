@@ -206,9 +206,74 @@ const prevSearchDiv = $("#previous-searches");
 //const apiKey = `${apiKey}`;
 
 const renderForecastCard = (forecast) => {
-  const iconUrl = `https://openweathermap.org/img/w${weather.weather[0].icon}.png`;
 
-  
+  //variables for data from the api
+  const iconUrl = `https://openweathermap.org/img/w${weather.weather[0].icon}.png`;
+  var iconDescription = forecast.weather[0].description;
+  var tempF = forecast.main.temp;
+  var windMph = forecast.wind.speed;
+  var humidity = forecast.main.humidity;
+
+  var card = document.createElement('div');
+  var cardBody = document.createElement('div');
+  var heading = document.createElement('h2');
+  var weatherIcon = document.createElement('img');
+  var tempEl = document.createElement('p');
+  var windEl = document.createElement('p');
+  var humidityEl = document.createElement('p');
+
+ col.append(card);
+ card.append(cardBody);
+ cardBody.append(cardTitle, weatherIcon, tempEl, windEl, humidityEl);
+
+  col.setAttribute('class', 'col-md');
+  col.classList.add('five-day-card');
+  cardBody.setAttribute('class', 'card-body p-2');
+  card.setAttribute('class', 'card bg-primary h-100 text-white');
+  tempEl.setAttribute('class', 'card-text');
+  windEl.setAttribute('class', 'card-text');
+  humidityEl.setAttribute('class', 'card-text');
+
+  cardTitle.textContent = dayjs(forecast.dt_txt).format('M/D/YYYY');
+  weatherIcon.setAttribute('src', iconUrl);
+  weatherIcon.setAttribute('alt', iconDescription);
+  weatherIcon.setAttribute('class', 'weather-img');
+  heading.append(weatherIcon);
+  tempEl.textContext = `Temp: ${tempF}°F`;
+  windEl.textContext = `Wind: ${windMph} MPH`;
+  humidityEl.textContext = `Humidity: ${humidity} %`;
+ forecastContainer.append(col);
+}
+
+function renderForecast(dailyForecast) {
+
+  var startDt = dayjs.add(1, 'day').startOf('day').unix();
+
+  var endDt = dayjs().add(6, 'day').startOf('day').unix();
+
+  var headingCOl = document.createElement('div');
+  var heading = document.createElement('h4');
+
+  headingCOl.setSttribute('class', 'col-12');
+  heading.textContent = '5-Day Forecast';
+  headingCol.append(heading);
+
+  forecastContainer.innerHTML = '';
+  forecastContainer.append(headingCol);
+
+  for (var i = 0; i < dailyForecast.length; i++) {
+
+    if (dailyForecast[i].dt >= startDt && dailyForecast[i].dt < endDt) {
+
+      if (dailyForecast[i].dt_txt.slice(11, 13) == "12") {
+        renderForecastCard(dailyForecast[i]);
+      } 
+    }
+  }
+
+}
+
+
 //   fetch(endpoint)
 //     .then((response) => {
 //       if (response.ok) {
@@ -258,7 +323,7 @@ const renderForecastCard = (forecast) => {
 //     }else{
 //         return false;
 //     }
-// }
+//}
 
 const addToPreviouslySearched = currentCityObj => {
     
