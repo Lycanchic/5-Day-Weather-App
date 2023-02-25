@@ -158,7 +158,7 @@ function renderCurrentWeather(cityName, weather) {
 }
 
 // onload defaults
-const cityName = 'Enter the name of a city';
+const cityName = 'Previous searches';
 
 //const searchHistory = getSearchHistory();
 const appendHistory = (search) => {
@@ -215,22 +215,129 @@ const getCurrentWeather = (city, apiKey) => {
   //     .forEach(forecast => renderForecastCard(forecast));
   // };
 
-  async function renderForecast(cityName) {
-    try {
-      const currentDayWeather = await getCurrentDayWeather(cityName);
-      const fiveDayWeather = await getFiveDayWeather(cityName);
+  //previous
+  // async function renderForecast(cityName) {
+  //   try {
+  //     const currentDayWeather = await getCurrentDayWeather(cityName);
+  //     const fiveDayWeather = await getFiveDayWeather(cityName);
   
-      displayCurrentDayWeather(currentDayWeather);
-      displayFiveDayWeather(fiveDayWeather);
+  //     displayCurrentDayWeather(currentDayWeather);
+  //     displayFiveDayWeather(fiveDayWeather);
   
-      // Show the weather display section
-      document.querySelector('#weather-display').style.display = 'block';
-    } catch (error) {
-      console.log(error);
-      alert('Could not get weather data. Please try again later.');
-    }
+  //     // Show the weather display section
+  //     document.querySelector('#weather-display').style.display = 'block';
+  //   } catch (error) {
+  //     console.log(error);
+  //     alert('Could not get weather data. Please try again later.');
+  //   }
+  // }
+  //end previous
+
+  function renderForecast(cityName) {
+    // const apiKey = ${apiKey};
+    // const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=imperial`;
+  
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const cityName = data.city.name;
+        const currentDayData = data.list[0];
+        const forecastData = data.list.slice(1, 6);
+  
+        // populate today's data
+        const todayImg = document.getElementById('today-img');
+        todayImg.src = `https://openweathermap.org/img/w/${currentDayData.weather[0].icon}.png`;
+  
+        const currentDayMax = document.getElementById('currentDay-max');
+        currentDayMax.textContent = `High: ${Math.round(currentDayData.main.temp_max)}°F`;
+  
+        const currentDayMin = document.getElementById('currentDay-min');
+        currentDayMin.textContent = `Low: ${Math.round(currentDayData.main.temp_min)}°F`;
+  
+        const currentDayWind = document.getElementById('currentDay-wind');
+        currentDayWind.textContent = `Wind: ${Math.round(currentDayData.wind.speed)} mph`;
+  
+        const currentDayHumidity = document.getElementById('currentDay-humidity');
+        currentDayHumidity.textContent = `Humidity: ${currentDayData.main.humidity}%`;
+  
+        const currentDayUV = document.getElementById('currentDay-uv');
+        currentDayUV.textContent = `UV: ${getUVIndexText(currentDayData)}`;
+  
+        // populate daily forecast data
+        const dailyCards = document.querySelectorAll('.daily-card');
+        forecastData.forEach((forecast, index) => {
+          const dailyCard = dailyCards[index];
+  
+          const dayName = dailyCard.querySelector('.day');
+          dayName.textContent = getDayOfWeek(forecast.dt);
+  
+          const weatherImg = dailyCard.querySelector('.weather-img');
+          weatherImg.src = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
+  
+          const maxTemp = dailyCard.querySelector('.max');
+          maxTemp.textContent = `High: ${Math.round(forecast.main.temp_max)}°F`;
+  
+          const minTemp = dailyCard.querySelector('.min');
+          minTemp.textContent = `Low: ${Math.round(forecast.main.temp_min)}°F`;
+  
+          const wind = dailyCard.querySelector('.wind');
+          wind.textContent = `Wind: ${Math.round(forecast.wind.speed)} mph`;
+  
+          const humidity = dailyCard.querySelector('.humidity');
+          humidity.textContent = `Humidity: ${forecast.main.humidity}%`;
+        });
+  
+        // show hidden cards
+        const today = document.getElementById('today');
+        today.style.display = 'block';
+  
+        const containerDailyCards = document.getElementById('container-daily-cards');
+        containerDailyCards.style.display = 'flex';
+  
+        // update city name
+        const cityNameEl = document.getElementById('city-name');
+        cityNameEl.textContent = cityName;
+  
+        // save search history
+        saveSearchHistory(cityName);
+      })
+      .catch(error => console.error('Error:', error));
+
   }
-  
+function renderForecastData(data) {
+  const dailyCards = document.querySelectorAll('.daily-card');
+  dailyCards.forEach((card, index) => {
+    const forecast = data.daily[index + 1];
+    const date = new Date(forecast.dt * 1000);
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const maxTemp = Math.round(forecast.temp.max);
+    const minTemp = Math.round(forecast.temp.min);
+    const windSpeed = Math.round(forecast.wind_speed);
+    const humidity = forecast.humidity;
+    const icon = forecast.weather[0].icon;
+    const description = forecast.weather[0].description;
+    
+    const img = card.querySelector('.weather-img');
+    const day = card.querySelector('.day');
+    const max = card.querySelector('.max');
+    const min = card.querySelector('.min');
+    const wind = card.querySelector('.wind');
+    const humid = card.querySelector('.humidity');
+
+    img.setAttribute('src', `https://openweathermap.org/img/w/${icon}.png`);
+    day.textContent = dayOfWeek;
+    max.textContent = `High: ${maxTemp}°F`;
+    min.textContent = `Low: ${minTemp}°F`;
+    wind.textContent = `Wind: ${windSpeed} mph`;
+    humid.textContent = `Humidity: ${humidity}%`;
+    card.setAttribute('title', `${description}`);
+  });
+
+  const containerDailyCards = document.getElementById('container-daily-cards');
+  containerDailyCards.style.display = 'block';
+}
+
+
   const fetchWeather = (location) => {
     const { lat, lon, name: city } = location;
     const apiUrl = `${weatherApiRootUrl}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`;

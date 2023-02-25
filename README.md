@@ -8,29 +8,16 @@
 ***
 
 ## Home Page
-[home page image]
+![Main Page](assets/images/Screenshot%20(3242).png)
 
-## Page 2
-[ page 2 image]
+<br>
 
-## Page 3
-[ page 3 image]
-
-
+## Console log showing returned data
+![Console log](assets/images/Screenshot%20(3243).png)
 
 
 ## User Story
 ***
-{user story context}
-
-## As a " ":
-*I would like to search for plants types, that fit my lifestyle, personal interests and or needs.*
-***
-   **SEARCH** for the plant I have in my home, to correctly identify its species, care needs, the toxicity level.
-
-   **LEARN** about the healing properties of hollistic plants 
-
-   **DISCOVER** the plants that are best for me, based on my astrological sign.## User Story
 
 ```
 AS A traveler
@@ -65,16 +52,24 @@ THEN I am again presented with current and future conditions for that city
     JS 
     Json 
     prettier
- 
+    OpenWeatherApi
+
+    
+## Third Party APIs used:
+
+ [Open Weather Api](https://openweathermap.org/)
 
 ## THE DEPLOYED REPO CAN BE FOUND AT THE FOLLOWING URL:
 ***
 
-[Deployed URL]
+
+[Click Here](https://lycanchic.github.io/5-Day-Weather-App/)
+
+<br>
 
   ## INSTALLATION OF THE REPO FROM GITHUB
   ***
-  A copy of the repository can be cloned at [${response.GitHub}]. 
+  A copy of the repository can be cloned at [Click Here](https://lycanchic.github.io/5-Day-Weather-App/). 
     * Simply click on the repo and select **Clone**. 
     * From the drop down menu select the copy icon. Type (directly into your terminal):
     ```
@@ -83,7 +78,7 @@ THEN I am again presented with current and future conditions for that city
 
   ## FUTURE ITERATIONS
   ***
-  **Future iterations**- 
+  **Future iterations**- Make it functional lol
 
 
 - - -
