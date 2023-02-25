@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/style.css"></link>
     <title>5 day Weather App</title>
+   
 </head>
 <body>
 
@@ -21,6 +22,10 @@
             <input type="text" placeholder="Sacramento">
             <button type="submit" id="search-btn">Search</button>
           </form>
+          <div id="searchHistoryContainer">
+            <h2>Search History</h2>
+            <ul id="searchHistoryList"></ul>
+          </div>
            <button id="clear-history">Clear search history</button>
         </aside>
         <div id="previous-searches">  
@@ -96,5 +101,6 @@
     </main>
    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>-->
 
+   
 <script src="assets/script.js"></script></body>
 </html>
