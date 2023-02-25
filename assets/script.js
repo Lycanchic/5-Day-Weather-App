@@ -1,11 +1,11 @@
 const apiKey = "c27a90ea804668002c47cdb527b44811";
-const mainEl = ('#main');
+const mainEl = document.querySelector('#main');
 const searchHistory = [];
 const weatherApiRootUrl = 'https://api.openweathermap.org';
 const weatherApiKey = apiKey;
 
-const cityNameInput = document.getElementById("city-input");
-const searchButton = document.getElementById("search-button");
+const cityNameInput = document.getElementById('city-input');
+const searchButton = document.getElementById('search-button');
 
 const searchForm = document.querySelector('#search-form');
 const searchInput = document.querySelector('#search-input');
@@ -15,9 +15,27 @@ const forecast = document.querySelector('#forecast');
 const searchHistoryContainer = document.querySelector('#history');
 
 //TimeZone plugins
+// Function to display t day.js
+dayjs.extend(window.dayjs_plugin_utc);
+dayjs.extend(window.dayjs_plugin_timezone);
 
-//dayjs.extend(window.dayjs_plugin_utc);
-//dayjs.extend(window.dayjs_plugin_timezone);
+
+function renderSearchHistory() {
+  searchHistoryContainer.innerHTML = '';
+
+  //Start at the end of histry array and count down to show the most recent st the top.
+  for (var i = searchHistory.length -1; i >= 0; i--) {
+    var btn = document.createElement('button');
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('aria-controls', 'today forecast');
+    btn.classList.add('history-btn', 'btn-history');
+
+    // `data-search` allows access to city name when click handler is invoked
+    btn.setAttribute('data-search', searchHistory[i]);
+    btn.textContent = searchHistory[i];
+    searchHistoryContainer.append(btn);
+  }
+}
 
 // Get the weather data for a city
 const getWeatherData = (city) => {
@@ -45,23 +63,7 @@ const renderWeather = (city) => {
     });
 };
 
-// Function to display t day.js
-function renderSearchHistory() {
-  searchHistoryContainer.innerHTML = '';
 
-  //Start at the end of histry array and count down to show the most recent st the top.
-  for (var i = searchHistory.length -1; i >= 0; i--) {
-    var btn = document.createElement('button');
-    btn.setAttribute('type', 'button');
-    btn.setAttribute('aria-controls', 'today forecast');
-    btn.classList.add('history-btn', 'btn-history');
-
-    // `data-search` allows access to city name when click handler is invoked
-    btn.setAttribute('data-search', searchHistory[i]);
-    btn.textContent = searchHistory[i];
-    searchHistoryContainer.append(btn);
-  }
-}
 
 // Function to update histroy in local storage then updates displayed history.
 
@@ -88,7 +90,7 @@ function initSearchHistory() {
 
 //Funciton to display the current weather data fetched from OpenWeather api
 function renderCurrentWeather(city, weather) {
-    var date = date.js().format('M/D/YYY');
+    var date = dayjs().format('M/D/YYY');
 
     //Store response ata from our fetch request in variables
     var tempF = weather.main.temp;
@@ -110,8 +112,24 @@ function renderCurrentWeather(city, weather) {
     card.append(cardBody);
 
     heading.setAttribute('class', 'card-body');
+    tempEl.setAttribute('class', 'card-body');
+    windEl.setAttribute('class', 'card-body');
+    humidityEl.setAttribute('class', 'card-body');
 
+    heading.textContent = `${city} (${date})`;
+    weatherIcon.setAttribute('src', iconUrl);
+    weatherIcon.setAttribute('alt', iconDescription);
+    weatherIcon.setAttribute('class', 'weather-img');
+    heading.append(weatherIcon);
+    tempEl.textContext = `Temp: ${tempF}°F`;
+    windEl.textContext = `Wind: ${windMph} MPH`;
+    humidityEl.textContext = `Humidity: ${humidity} %`;
+    cardBody.append(heading, tempEl, windEl, humidityEl);
+
+    today.innerHTML = '';
+    today.append(card);
 }
+
 // onload defaults
 /*let lat = "52.5";
 let lon = "-1.95";*/
@@ -130,13 +148,41 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${api
     const description = data.weather[0].description;
     console.log(`Temperature in ${cityName}: ${temperature}°C`);
     console.log(`Description: ${description}`);
+
+    renderCurrentWeather(cityName, data);
+  })
+  .catch((error) => {
+    console.log(`An error occurred while fetching the weather data: ${error}`);
+  });
+
   
   //.catch((error) => {
     //console.log("An error occurred while fetching the weather data:", error);
-  })
-const weatherDescription = data.weather[0].description;
-const temperature = data.main.temp;
-const feelsLike = data.main.feels_like;
+
+   // const renderWeather = (cityName) => {
+    // const apiKey = "YOUR_API_KEY_HERE";
+     // const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`;
+    
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          const weatherDescription = data.weather[0].description;
+          const temperature = data.main.temp;
+          const feelsLike = data.main.feels_like;
+    
+          // Log the weather information to the console
+          console.log(`The weather in ${cityName} is currently ${weatherDescription}.`);
+          console.log(`The temperature is ${temperature} Fahrenheit.`);
+          console.log(`It feels like ${feelsLike} Fahrenheit.`);
+        })
+        .catch((error) => {
+          console.log(`An error occurred while fetching the weather data: ${error}`);
+        });
+   // };
+
+//const weatherDescription = data.weather[0].description;
+//const temperature = data.main.temp;
+//const feelsLike = data.main.feels_like;
 
 // Log the weather information to the console
 console.log(`The weather in ${cityName} is currently ${weatherDescription}.`);
@@ -157,13 +203,62 @@ const prevSearchDiv = $("#previous-searches");
 
 /*const kevlinToCelsius = tempKel => tempKel - 273.15; // -273.15 kelvin = 0 deg cel*/
 
-const isInList = (currentId = "") => {
-    if($(`[data-city-id="${currentId}"]`).length){
-        return true;
-    }else{
-        return false;
-    }
-}
+//const apiKey = `${apiKey}`;
+
+const renderForecastCard = (forecast) => {
+  const iconUrl = `https://openweathermap.org/img/w${weather.weather[0].icon}.png`;
+
+  
+//   fetch(endpoint)
+//     .then((response) => {
+//       if (response.ok) {
+//         return response.json();
+//       } else {
+//         throw new Error("Unable to fetch weather data");
+//       }
+//     })
+//     .then((data) => {
+//       const cityLon = data.coord.lon;
+//       const cityLat = data.coord.lat;
+//       const cityName = data.name;
+//       const cityCountry = data.sys.country;
+//       const cityId = data.id;
+//       const endpoint = `https://api.openweathermap.org/data/2.5/onecall?lat=${cityLat}&lon=${cityLon}&appid=${apiKey}&exclude=current,minutely,hourly&units=imperial`;
+//       return fetch(endpoint);
+//     })
+//     .then((response) => {
+//       if (response.ok) {
+//         return response.json();
+//       } else {
+//         throw new Error("Unable to fetch forecast data");
+//       }
+//     })
+//     .then((data) => {
+//       const dailyData = data.daily;
+//       const forecast = dailyData.slice(0, 5).map((day) => {
+//         const date = new Date(day.dt * 1000);
+//         const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+//         const temperature = day.temp.day;
+//         const weatherDescription = day.weather[0].description;
+//         return { weekday, temperature, weatherDescription };
+//       });
+//       console.log(`The 5-day forecast for ${cityName} is:`, forecast);
+//     })
+//     .catch((error) => {
+//       console.log(`An error occurred while fetching the weather data: ${error}`);
+//     });
+// };
+
+// // Example usage
+// renderForecast("London");
+
+// const isInList = (currentId = "") => {
+//     if($(`[data-city-id="${currentId}"]`).length){
+//         return true;
+//     }else{
+//         return false;
+//     }
+// }
 
 const addToPreviouslySearched = currentCityObj => {
     
